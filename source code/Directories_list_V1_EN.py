@@ -131,42 +131,41 @@ def listar_dirs():
     def listar_dirs2():
 
         rootdir = ruta_in.get()
-        handler = open(ruta_out.get() + "/Directory_Lister.txt", "a", encoding="utf-8")
-        progressbar.start()
+        # handler = open(ruta_out.get() + "/Directory_Lister.txt", "a", encoding="utf-8")
         lista = [carpeta for carpeta in os.walk(rootdir)]
         ficheros_cont = 0
+        with open(ruta_out.get() + "/Directory_Lister.txt", "a", encoding="utf-8") as f:
+            progressbar.start()
 
-        for carpeta in os.walk(rootdir):
-            a = f'\nIn Folder "{carpeta[0]}" Are {len(carpeta[2])} Files:'
-            b = "-" * 80 + "\n"
-            handler.write(str(a) + "\n" + b)
-            cant_dirs.set(str(len(lista)))
+            for carpeta in os.walk(rootdir):
+                a = f'\nIn Folder "{carpeta[0]}" Are {len(carpeta[2])} Files:'
+                b = "-" * 80 + "\n"
+                f.write(str(a) + "\n" + b)
+                cant_dirs.set(str(len(lista)))
 
-            for fichero in carpeta[2]:
-                b = f' ---> {fichero}'
-                ficheros_cont += 1
-                handler.write(str(b) + "\n")
-                cant_arch.set(str(ficheros_cont))
+                for fichero in carpeta[2]:
+                    b = f' ---> {fichero}'
+                    ficheros_cont += 1
+                    f.write(str(b) + "\n")
+                    cant_arch.set(str(ficheros_cont))
 
         report = "*" * 80 + "\n" + f"{ficheros_cont} Files Found In {len(lista)} Folders."
-        handler.write(report + "\n")
-        handler.close()
+        f.write(report + "\n")
         progressbar.stop()
         progressbar.set(100)
 
     if ruta_in.get() and ruta_out.get() != "":
         time_ahora = datetime.now()
         dir_in_var = "-"*80 + "\nfolder to analyze:\n".title() + ruta_in.get() + "\n"
-        dir_out_var = "report target folder:\n".title() + ruta_out.get() + "\n" + "-" * 80 + "\n" + str(time_ahora) + "\n" + "-" * 80
-        handler = open(ruta_out.get() + "/Directory_Lister.txt", "w", encoding="utf-8")
-        handler.write(dir_in_var + "\n" + dir_out_var + "\n")
-        handler.close()
+        dir_out_var = "report target folder:\n".title() + ruta_out.get() + "\n" + "-" * 80 + "\n" + str(time_ahora) + \
+                      "\n" + "-" * 80
+        with open(ruta_out.get() + "/Directory_Lister.txt", "w", encoding="utf-8") as ff:
+            ff.write(dir_in_var + "\n" + dir_out_var + "\n")
+            threading.Thread(target=listar_dirs2).start()
 
     else:
         showwarning("Error in Directories selection".title(),
                     message="source and taget must be selected before execution !".title())
-
-    threading.Thread(target=listar_dirs2).start()
 
 
 # Botones
@@ -175,7 +174,7 @@ button = customtkinter.CTkButton(master=root_tk,
                                  corner_radius=15,
                                  width=80,
                                  height=25,
-                                 #borderwidth=0,
+                                 # borderwidth=0,
                                  text="Source Dir",
                                  hover=True,
                                  command=lambda: seleccion_dir())
@@ -185,7 +184,7 @@ button2 = customtkinter.CTkButton(master=root_tk,
                                   corner_radius=15,
                                   width=80,
                                   height=25,
-                                  #borderwidth=0,
+                                  # borderwidth=0,
                                   text="Target Dir",
                                   hover=True,
                                   command=lambda: seleccion_dir(1))
@@ -196,7 +195,7 @@ button3 = customtkinter.CTkButton(master=root_tk,
                                   corner_radius=15,
                                   width=150,
                                   height=25,
-                                  #borderwidth=0,
+                                  # borderwidth=0,
                                   text="List Directories",
                                   hover=True,
                                   command=lambda: listar_dirs())
