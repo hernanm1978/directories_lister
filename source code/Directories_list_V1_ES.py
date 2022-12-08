@@ -162,13 +162,12 @@ def listar_dirs():
                       str(time_ahora) + "\n" + "-" * 80
         with open(ruta_out.get() + "/Directory_Lister.txt", "w", encoding="utf-8") as ff:
             ff.write(dir_in_var + "\n" + dir_out_var + "\n")
+            threading.Thread(target=listar_dirs2).start()
 
     else:
         showwarning("Error en seleccion de directorios".title(),
                     message="deben seleccionarse tanto el directorio source como el target antes de la "
                             "ejecucion !".title())
-
-    threading.Thread(target=listar_dirs2).start()
 
 
 # Botones
