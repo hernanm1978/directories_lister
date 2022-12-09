@@ -36,14 +36,15 @@ class Modelo:
         def listar_dirs2():
 
             progressbar.start()
-            lista = [carpeta for carpeta in os.walk(rootdir)]
             ficheros_cont = 0
+            carpetas_cont = 0
             with open(root_out + "/Directory_Lister.txt", "a", encoding="utf-8") as f:
                 for carpeta in os.walk(rootdir):
                     a = f'\nEn Carpeta "{carpeta[0]}" Hay {len(carpeta[2])} Archivos:'
                     b = "-" * 50 + "\n"
+                    carpetas_cont += 1
                     f.write(str(a) + "\n" + b)
-                    cantdirs.set(str(len(lista)))
+                    cantdirs.set(str(carpetas_cont))
 
                     for fichero in carpeta[2]:
                         b = f' ---> {fichero}'
@@ -51,7 +52,7 @@ class Modelo:
                         f.write(str(b) + "\n")
                         cantarch.set(str(ficheros_cont))
 
-                report = "*" * 80 + "\n" + f"{ficheros_cont} archivos encontrados en {len(lista)} carpetas."
+                report = "*" * 80 + "\n" + f"{ficheros_cont} archivos encontrados en {carpetas_cont} carpetas."
                 f.write(report + "\n")
                 progressbar.stop()
                 progressbar.set(100)

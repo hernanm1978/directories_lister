@@ -152,16 +152,17 @@ class DirectoriesLister:
         def __listar_dirs2():
             rootdir = self.__path_in.get()
             # handler = open(ruta_out.get() + "/Directory_Lister.txt", "a", encoding="utf-8")
-            lista = [carpeta for carpeta in os.walk(rootdir)]
             ficheros_cont = 0
+            carpetas_cont = 0
             with open(self.__path_out.get() + "/Directory_Lister.txt", "a", encoding="utf-8") as f:
                 progressbar.start()
 
                 for carpeta in os.walk(rootdir):
                     a = f'\nIn Folder "{carpeta[0]}" Are {len(carpeta[2])} Files:'
                     b = "-" * 80 + "\n"
+                    carpetas_cont += 1
                     f.write(str(a) + "\n" + b)
-                    self.__amount_folders.set(str(len(lista)))
+                    self.__amount_folders.set(str(carpetas_cont))
 
                     for fichero in carpeta[2]:
                         b = f' ---> {fichero}'
@@ -169,7 +170,7 @@ class DirectoriesLister:
                         f.write(str(b) + "\n")
                         self.__amount_files.set(str(ficheros_cont))
 
-                report = "*" * 80 + "\n" + f"{ficheros_cont} Files Found In {len(lista)} Folders."
+                report = "*" * 80 + "\n" + f"{ficheros_cont} Files Found In {carpetas_cont} Folders."
                 f.write(report + "\n")
                 progressbar.stop()
                 progressbar.set(100)

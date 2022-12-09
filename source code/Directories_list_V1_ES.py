@@ -133,16 +133,18 @@ def listar_dirs():
 
         rootdir = ruta_in.get()
         # handler = open(ruta_out.get() + "/Directory_Lister.txt", "a", encoding="utf-8")
-        lista = [carpeta for carpeta in os.walk(rootdir)]
+        # lista = [carpeta for carpeta in os.walk(rootdir)]
         ficheros_cont = 0
+        carpetas_cont = 0
         with open(ruta_out.get() + "/Directory_Lister.txt", "a", encoding="utf-8") as f:
             progressbar.start()
 
             for carpeta in os.walk(rootdir):
                 a = f'\nEn Carpeta "{carpeta[0]}" Hay {len(carpeta[2])} Archivos:'
                 b = "-" * 50 + "\n"
+                carpetas_cont += 1
                 f.write(str(a) + "\n" + b)
-                cant_dirs.set(str(len(lista)))
+                cant_dirs.set(str(carpetas_cont))
 
                 for fichero in carpeta[2]:
                     b = f' ---> {fichero}'
@@ -150,7 +152,7 @@ def listar_dirs():
                     f.write(str(b) + "\n")
                     cant_arch.set(str(ficheros_cont))
 
-            report = "*" * 80 + "\n" + f"{ficheros_cont} archivos encontrados en {len(lista)} carpetas."
+            report = "*" * 80 + "\n" + f"{ficheros_cont} archivos encontrados en {carpetas_cont} carpetas."
             f.write(report + "\n")
             progressbar.stop()
             progressbar.set(100)
